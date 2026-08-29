@@ -1,0 +1,5 @@
+# TP2
+
+**Carlos Alejandro Lugones**
+
+**Materia:** INTRODUCCION A LA INGENIERIA DE SOFTWARE ASISTIDA POR IA
