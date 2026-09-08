@@ -24,7 +24,7 @@ Una bad UI que finge ser un juego de habilidad y no lo es. No es hostil por difi
 
 **Los indicadores de intento cambian de propósito a mitad de camino** Ver más abajo — fue un hallazgo, no un plan.
 
-**Decisiones mías (diseño y concepto del TP):**
+**diseño y concepto del TP):**
 - La idea central del engaño: un juego de caza de patos que aparenta depender de la puntería pero en realidad tiene un resultado sorteado de antemano.
 - El mecanismo concreto: 5 intentos de 5 disparos cada uno, un `luckyAttempt` garantizado y nunca revelado, sin colisión real.
 - La estética de feria (rayas rojo/blanco, tipografía de cartel, dorados).
@@ -32,7 +32,7 @@ Una bad UI que finge ser un juego de habilidad y no lo es. No es hostil por difi
 - El texto exacto de los Prompts 1, 2 y 3 — los escribí yo directamente en Gemini.
 - Rechazar el placeholder de texto para el libro y pedir el PDF real; rechazar la carpeta con archivos sueltos y pedir un solo archivo; rechazar que yo (o el docente) tuviera que pegar el base64 a mano sin entender por qué, hasta confirmar que era un límite técnico real y no una excusa (probé de todo).
 
-**Decisiones de la IA (diagnóstico técnico e implementación de los ajustes):**
+##Decisiones de la IA (diagnóstico técnico e implementación de los ajustes)
 - Ajustes puntuales de los prompts (bajar la velocidad de los patos, agregar la tolerancia de distancia, corregir el bug del orden en el listener del candado, cambiar el visor de PDF por `pdf.js`, pasar de URL a base64) a partir de problemas que yo reportaba o que la IA encontraba revisando el código antes de aceptarlo.
 - Diagnosticar la causa técnica de cada falla (el bug de los indicadores, el error de CORS en `file://`, el estiramiento del canvas por `align-items` de flexbox, el límite de salida de los modelos de lenguaje para generar el base64).
 - Decidir cuándo un ajuste era lo bastante simple y mecánico como para hacerlo directo en el código (el cambio a base64, mover esa constante al final del archivo, el fix del estiramiento) en vez de redactar otro prompt.
