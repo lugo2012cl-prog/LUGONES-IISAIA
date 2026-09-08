@@ -8,7 +8,7 @@ Doble click en `index.html`. Un solo archivo, sin dependencias.
 
 ## Qué me propuse construir
 
-Una bad UI que finge ser un juego de habilidad y no lo es. No es hostil por dificultad (como un captcha imposible de leer) sino por **engaño de agencia**: le das al jugador todas las señales de que su puntería importa —mira que sigue al mouse, patos con velocidades distintas, animación de disparo hacia el punto exacto donde apuntó— y ninguna de esas señales tiene relación real con si acierta o no. La frustración no es "esto es difícil", es "creí que dependía de mí y no dependía de nada que yo hiciera". Salió en tres prompts, en una sola conversación de Gemini Canvas.
+Una bad UI que finge ser un juego de habilidad y no lo es. No es hostil por dificultad (como un captcha imposible de leer) sino por **engaño de agencia**: le das al jugador todas las señales de que su puntería importa —mira que sigue al mouse, patos con velocidades distintas, animación de disparo hacia el punto exacto donde apuntó— y ninguna de esas señales tiene relación real con si acierta o no. La frustración no es "esto es difícil", es "creí que dependía de mí y no dependía de nada que yo hiciera". Salió en cuatro prompts, en una sola conversación de Gemini.
 
 ## Decisiones que tomé yo
 
