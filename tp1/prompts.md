@@ -1,6 +1,6 @@
-# Prompts para Canvas — versión consolidada en 4 pasos
+# Prompts — versión consolidada en 4 pasos
 
-Los 4 prompts se pegan en orden, en una misma conversación de Canvas (sin resetear entre uno y otro).
+Los 4 prompts se pegan en orden, en una misma conversación de Gemini (sin resetear entre uno y otro).
 
 ---
 
