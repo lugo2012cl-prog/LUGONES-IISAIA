@@ -18,29 +18,25 @@ Una bad UI que finge ser un juego de habilidad y no lo es. No es hostil por difi
 
 **Intentos anidados en disparos, no una sola bolsa de 5 tiros.** Son 5 intentos, cada uno con sus propios 5 disparos (no "5 disparos en total"). Esto multiplica la sensación de progreso falso: cada intento fallido se siente como una partida nueva, no como quedarte sin balas.
 
-**Estética de feria, no de captcha viejo.** A propósito distinta del ejemplo de cátedra (que usa una estética gris, dura, tipo formulario de verificación): acá el fondo de rayas rojo/blanco, la tipografía tipo cartel y los botones dorados hacen que el engaño se sienta "divertido" antes de descubrir que está amañado — el contraste entre lo lúdico y lo tramposo es parte del chiste.
+**Estética de feria.** El fondo de rayas rojo/blanco, la tipografía tipo cartel y los botones dorados hacen que el engaño se sienta "divertido" antes de descubrir que está amañado — el contraste entre lo lúdico y lo tramposo es parte del chiste.
 
-**El libro como candado, el juego como paso intermedio.** Mismo principio que remarca la cátedra en su propio ejemplo ("el captcha no es la página"): un juego de caza patos suelto no frustra a nadie, porque nadie llega ahí queriendo leer nada. Envuelto como la única puerta hacia un libro que sí querías leer, corta algo real.
+**El libro como candado, el juego como paso intermedio.** Mismo principio que remarca la cátedra en su propio ejemplo ("el captcha no es la página"): un juego de caza de patos suelto no frustra a nadie, porque nadie llega ahí queriendo leer nada. Envuelto como la única puerta hacia un libro que sí querías leer, algo mas real.
 
-**Los indicadores de intento se re-propósito a mitad de camino.** Ver más abajo — fue un hallazgo, no un plan.
-
-## Qué decisiones tomé yo vs. qué decisiones tomó la IA (Claude)
-
-Separando esto explícitamente porque en el proceso hubo dos asistentes de IA con roles distintos: **Gemini Canvas** generó el código a partir de los prompts, y **Claude** me ayudó a revisar ese código, redactar los prompts de ajuste, diagnosticar errores, y en algunos casos puntuales intervino directo sobre el código en vez de pasar por un prompt.
+**Los indicadores de intento cambian de propósito a mitad de camino** Ver más abajo — fue un hallazgo, no un plan.
 
 **Decisiones mías (diseño y concepto del TP):**
-- La idea central del engaño: un juego de caza patos que aparenta depender de la puntería pero en realidad tiene un resultado sorteado de antemano.
+- La idea central del engaño: un juego de caza de patos que aparenta depender de la puntería pero en realidad tiene un resultado sorteado de antemano.
 - El mecanismo concreto: 5 intentos de 5 disparos cada uno, un `luckyAttempt` garantizado y nunca revelado, sin colisión real.
-- La estética de feria (rayas rojo/blanco, tipografía de cartel, dorados) como contraste deliberado con el ejemplo gris/duro de la cátedra.
+- La estética de feria (rayas rojo/blanco, tipografía de cartel, dorados).
 - Que el libro funcione como candado y el juego como paso intermedio, no como el contenido final en sí.
-- El texto exacto de los Prompts 1, 2 y 3 — los escribí yo directamente en Gemini Canvas.
-- Rechazar el placeholder de texto para el libro y pedir el PDF real; rechazar la carpeta con archivos sueltos y pedir un solo archivo; rechazar que yo (o el docente) tuviera que pegar el base64 a mano sin entender por qué, hasta confirmar que era un límite técnico real y no una excusa.
+- El texto exacto de los Prompts 1, 2 y 3 — los escribí yo directamente en Gemini.
+- Rechazar el placeholder de texto para el libro y pedir el PDF real; rechazar la carpeta con archivos sueltos y pedir un solo archivo; rechazar que yo (o el docente) tuviera que pegar el base64 a mano sin entender por qué, hasta confirmar que era un límite técnico real y no una excusa (probé de todo).
 
-**Decisiones de Claude (diagnóstico técnico e implementación de los ajustes):**
-- Redactar los prompts de ajuste puntual (bajar la velocidad de los patos, agregar la tolerancia de distancia, corregir el bug del orden en el listener del candado, cambiar el visor de PDF por `pdf.js`, pasar de URL a base64) a partir de problemas que yo reportaba o que Claude encontraba revisando el código antes de aceptarlo.
+**Decisiones de la IA (diagnóstico técnico e implementación de los ajustes):**
+- Ajustes puntuales de los prompts (bajar la velocidad de los patos, agregar la tolerancia de distancia, corregir el bug del orden en el listener del candado, cambiar el visor de PDF por `pdf.js`, pasar de URL a base64) a partir de problemas que yo reportaba o que la IA encontraba revisando el código antes de aceptarlo.
 - Diagnosticar la causa técnica de cada falla (el bug de los indicadores, el error de CORS en `file://`, el estiramiento del canvas por `align-items` de flexbox, el límite de salida de los modelos de lenguaje para generar el base64).
-- Decidir cuándo un ajuste era lo bastante simple y mecánico como para hacerlo directo en el código (el cambio a base64, mover esa constante al final del archivo, el fix del estiramiento) en vez de redactar otro prompt para Canvas — y avisarme cada vez que lo hacía, en vez de mezclarlo en silencio con lo que generaba Canvas.
-- El intento de extraer el texto del PDF con `pdftotext` y reconstruir los capítulos por script fue una decisión de Claude que después se descartó por sobre-trabajada — documentado como error en la sección siguiente, no oculto.
+- Decidir cuándo un ajuste era lo bastante simple y mecánico como para hacerlo directo en el código (el cambio a base64, mover esa constante al final del archivo, el fix del estiramiento) en vez de redactar otro prompt.
+- Cuando pedi el texto completo del libro, el primer intento de la IA fue extraerlo del PDF con pdftotext y reconstruir los capítulos con un script — una solución innecesariamente complicada para el problema, que termino descartando. Está documentada como error en la sección siguiente.
 - Armar y consolidar los prompts en la secuencia final de `prompts.md`, y detectar que pedirle a Gemini que generara el base64 completo (Prompt 5, después descartado) no era viable por el límite de salida del modelo.
 
 ## Qué salió mal y cómo lo corregí
@@ -53,7 +49,7 @@ Lo agarré releyendo el código generado por el primer prompt antes de mandar el
 
 Es exactamente el tipo de bug silencioso que una revisión cruzada entre prompt y código detecta antes de que se complique con la siguiente iteración — y no lo vi al escribir el prompt inicial, lo vi releyendo el resultado.
 
-**El paso "libro" mostraba un texto de ejemplo, no el libro real, y me complicué de más resolviéndolo.** El prompt que arma el flujo de tres pasos pedía a propósito un placeholder ("dejá un texto largo de ejemplo, lo reemplazo yo después") para no obligar a Gemini Canvas a escribir de memoria un libro entero de 1532. El problema es que mi primer instinto para resolverlo fue extraer el texto completo del PDF con `pdftotext`, reconstruir los 26 capítulos por script (detectando títulos en mayúsculas, uniendo párrafos partidos por saltos de línea del PDF) e insertarlo todo como HTML estático — una solución frágil y sobre-trabajada para un problema simple. La corrección más directa era pedirle a Gemini Canvas que, en vez de mostrar texto, pusiera un `<iframe>` apuntando al archivo real (`src="el-principe.pdf"`) ubicado junto al `index.html`: el navegador lo renderiza solo, sin parsear ni reformatear nada. Descarté el script de extracción y pedí ese cambio con un prompt nuevo.
+**El paso "libro" mostraba un texto de ejemplo, no el libro real, y me compliqué de más resolviéndolo.** El prompt que arma el flujo de tres pasos pedía a propósito un placeholder ("dejá un texto largo de ejemplo, lo reemplazo yo después") para no obligar a Gemini a escribir de memoria un libro entero. El problema es que mi primer instinto para resolverlo fue extraer el texto completo del PDF con `pdftotext`, reconstruir los 26 capítulos por script (detectando títulos en mayúsculas, uniendo párrafos partidos por saltos de línea del PDF) e insertarlo todo como HTML estático — una solución frágil y sobretrabajada para un problema simple. La corrección más directa era pedirle a Gemini que, en vez de mostrar texto, pusiera un `<iframe>` apuntando al archivo real (`src="el-principe.pdf"`) ubicado junto al `index.html`: el navegador lo renderiza solo, sin parsear ni reformatear nada. Descarté el script de extracción y pedí ese cambio con un prompt nuevo.
 
 **El PDF cargado por URL fallaba al abrir el HTML con doble click, aunque el archivo estuviera al lado.** Después de pasar el libro a un lector con `pdf.js` (para poder fijar el zoom yo mismo en vez de depender del visor nativo), el paso "libro" tiraba "Error al cargar el libro" incluso con `el-principe.pdf` bien ubicado junto al `index.html`. La causa no era la ruta del archivo: `pdf.js` necesita *pedir* el PDF por código (un `fetch` interno) para leer sus bytes, y los navegadores bloquean por seguridad que una página abierta como `file://` haga ese tipo de pedido a otro archivo local — es la política de CORS para archivos locales, no un bug del código ni algo que un prompt distinto a Gemini Canvas pudiera arreglar. La solución fue sacar el `fetch` de la ecuación por completo: en vez de pedirle a `pdf.js` una URL, le paso los bytes del PDF ya decodificados desde una constante en base64 embebida en el propio script (`pdfjsLib.getDocument({ data: ... })`). Sin URL de por medio, no hay pedido de red y el bloqueo de CORS no aplica.
 
