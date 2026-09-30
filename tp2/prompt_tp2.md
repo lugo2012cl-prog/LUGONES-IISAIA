@@ -1,4 +1,4 @@
-# Prompts — TP 2 (turnos y vacantes)
+# Prompts — LUGONES CARLOS - TP 2 (turnos y vacantes)
 
 ## Prompt 1 (fija los cuatro endpoints principales y la separación input/output)
 
