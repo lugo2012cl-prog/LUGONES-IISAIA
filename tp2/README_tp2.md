@@ -1,4 +1,4 @@
-# TP 2 — API de turnos y vacantes
+# TP 2 — LUGONES CARLOS - API de turnos y vacantes
 
 Un `openapi.yaml` que describe una API donde cada turno de guardia puede tener una vacante asociada, y una vacante no existe fuera de un turno. Cinco endpoints, tres paths, sin nada implementado: el entregable es el contrato.
 
