@@ -1,0 +1,144 @@
+openapi: 3.1.0
+info:
+  title: API de turnos y vacantes
+  description: Cada turno de guardia puede tener vacantes asociadas. Una vacante no existe fuera de un turno.
+  version: 1.0.0
+
+paths:
+  /turnos:
+    get:
+      summary: Lista todos los turnos
+      responses:
+        '200':
+          description: Lista de turnos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Turno'
+    post:
+      summary: Crea un turno
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TurnoInput'
+      responses:
+        '201':
+          description: Turno creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Turno'
+        '400':
+          description: Falta medico_titular, fecha_inicio o fecha_fin
+
+  /turnos/{turnoId}/vacantes:
+    parameters:
+      - name: turnoId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Lista las vacantes de un turno
+      responses:
+        '200':
+          description: Lista de vacantes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vacante'
+        '404':
+          description: El turno no existe
+    post:
+      summary: Genera una vacante para un turno
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VacanteInput'
+      responses:
+        '201':
+          description: Vacante creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vacante'
+        '404':
+          description: El turno no existe
+
+  /turnos/{turnoId}/vacantes/{vacanteId}:
+    parameters:
+      - name: turnoId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: vacanteId
+        in: path
+        required: true
+        schema:
+          type: integer
+    delete:
+      summary: Cancela o libera una vacante
+      responses:
+        '204':
+          description: Vacante cancelada
+        '404':
+          description: La vacante no existe
+
+components:
+  schemas:
+    Turno:
+      type: object
+      required: [id, medico_titular, fecha_inicio, fecha_fin]
+      properties:
+        id:
+          type: integer
+        medico_titular:
+          type: string
+        fecha_inicio:
+          type: string
+          format: date-time
+        fecha_fin:
+          type: string
+          format: date-time
+
+    TurnoInput:
+      type: object
+      required: [medico_titular, fecha_inicio, fecha_fin]
+      properties:
+        medico_titular:
+          type: string
+        fecha_inicio:
+          type: string
+          format: date-time
+        fecha_fin:
+          type: string
+          format: date-time
+
+    Vacante:
+      type: object
+      required: [id, turno_id, estado]
+      properties:
+        id:
+          type: integer
+        turno_id:
+          type: integer
+        estado:
+          type: string
+          enum: [libre]
+        motivo:
+          type: string
+
+    VacanteInput:
+      type: object
+      properties:
+        motivo:
+          type: string
